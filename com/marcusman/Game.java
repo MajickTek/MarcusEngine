@@ -25,6 +25,7 @@ import java.awt.Graphics;
 
 import java.lang.Runnable;
 import java.lang.Thread;
+import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 
@@ -86,22 +87,30 @@ public class Game extends JFrame implements Runnable
 		renderer = new RenderHandler(getWidth(), getHeight());
 
 		//Load Assets
-		BufferedImage sheetImage = loadImage("Tiles1.png");
+		BufferedImage sheetImage = loadImage("/Tiles1.png");
 		sheet = new SpriteSheet(sheetImage);
 		sheet.loadSprites(16, 16);
 
-		BufferedImage playerSheetImage = loadImage("Player.png");
+		BufferedImage playerSheetImage = loadImage("/Player.png");
 		playerSheet = new SpriteSheet(playerSheetImage);
 		playerSheet.loadSprites(20, 26);
 
 		//Player Animated Sprites
 		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
 
-		//Load Tiles
-		tiles = new Tiles(new File("Tiles.txt"),sheet);
+		
+		try {
+			//Load Tiles
+			tiles = new Tiles(new File(Game.class.getResource("/Tiles.txt").toURI()),sheet);
+		
+			//Load Map
+			map = new Map(new File(Game.class.getResource("/Map.txt").toURI()), tiles);
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-		//Load Map
-		map = new Map(new File("Map.txt"), tiles);
+		
 
 		//testImage = loadImage("GrassTile.png");
 		//testSprite = sheet.getSprite(4,1);
