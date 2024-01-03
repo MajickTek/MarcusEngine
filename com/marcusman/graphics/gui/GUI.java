@@ -1,3 +1,12 @@
+package com.marcusman.graphics.gui;
+
+import com.marcusman.Game;
+import com.marcusman.utils.GameObject;
+import com.marcusman.graphics.gui.GUIButton;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.RenderHandler;
+import com.marcusman.graphics.Sprite;
+
 public class GUI implements GameObject
 {
 	private Sprite backgroundSprite;

@@ -1,3 +1,9 @@
+package com.marcusman.logic;
+
+import com.marcusman.graphics.RenderHandler;
+import com.marcusman.graphics.Sprite;
+import com.marcusman.graphics.SpriteSheet;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

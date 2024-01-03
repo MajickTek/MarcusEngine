@@ -1,3 +1,12 @@
+package com.marcusman.graphics.gui;
+
+import com.marcusman.Game;
+import com.marcusman.utils.GameObject;
+import com.marcusman.graphics.gui.GUI;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.RenderHandler;
+import com.marcusman.graphics.Sprite;
+
 public abstract class GUIButton implements GameObject
 {
 	protected Sprite sprite;

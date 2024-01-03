@@ -1,3 +1,7 @@
+package com.marcusman.input;
+
+import com.marcusman.Game;
+
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusListener;

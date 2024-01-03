@@ -1,3 +1,12 @@
+package com.marcusman.graphics;
+
+import com.marcusman.Game;
+import com.marcusman.utils.GameObject;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.RenderHandler;
+import com.marcusman.graphics.Sprite;
+import com.marcusman.graphics.SpriteSheet;
+
 import java.awt.image.BufferedImage;
 
 public class AnimatedSprite extends Sprite implements GameObject

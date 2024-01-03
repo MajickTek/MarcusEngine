@@ -1,3 +1,9 @@
+package com.marcusman.graphics;
+
+import com.marcusman.Game;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.Sprite;
+
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.image.BufferedImage;

@@ -1,3 +1,7 @@
+package com.marcusman.graphics;
+
+import com.marcusman.graphics.SpriteSheet;
+
 import java.awt.image.BufferedImage;
 
 public class Sprite

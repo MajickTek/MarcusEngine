@@ -1,9 +1,13 @@
+package com.marcusman.utils;
+
+import com.marcusman.Game;
+
 public class Rectangle 
 {
 	public int x,y,w,h;
 	private int[] pixels;
 
-	Rectangle(int x, int y, int w, int h) 
+	public Rectangle(int x, int y, int w, int h) 
 	{
 		this.x = x;
 		this.y = y;
@@ -11,7 +15,7 @@ public class Rectangle
 		this.h = h;
 	}
 
-	Rectangle() 
+	public Rectangle() 
 	{
 		this(0,0,0,0);
 	}

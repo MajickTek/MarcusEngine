@@ -1,3 +1,11 @@
+package com.marcusman.logic;
+
+import com.marcusman.Game;
+import com.marcusman.utils.GameObject;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.RenderHandler;
+import com.marcusman.logic.Tiles;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

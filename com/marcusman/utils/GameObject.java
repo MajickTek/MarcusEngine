@@ -1,3 +1,9 @@
+package com.marcusman.utils;
+
+import com.marcusman.Game;
+import com.marcusman.utils.Rectangle;
+import com.marcusman.graphics.RenderHandler;
+
 public interface GameObject 
 {
 
