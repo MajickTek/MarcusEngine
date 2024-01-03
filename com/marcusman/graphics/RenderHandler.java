@@ -27,6 +27,9 @@ public class RenderHandler
 //			if(maxScreenHeight < graphicsDevices[i].getDisplayMode().getHeight()-1)
 //				maxScreenHeight = graphicsDevices[i].getDisplayMode().getHeight() - 1;
 //		}
+		
+		
+		//subtracting 1 from the size allows opening the window in fullscreen while avoiding graphical artifacts
 		maxScreenWidth = defaultGraphicsDevice.getDisplayMode().getWidth()-1;
 		maxScreenHeight = defaultGraphicsDevice.getDisplayMode().getHeight()-1;
 
