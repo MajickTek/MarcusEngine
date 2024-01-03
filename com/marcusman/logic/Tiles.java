@@ -17,10 +17,9 @@ public class Tiles
 	//This will only work assuming the sprites in the spriteSheet have been loaded.
 	public Tiles(File tilesFile, SpriteSheet spriteSheet)
 	{
-		this.spriteSheet = spriteSheet;
-		try 
+		this.setSpriteSheet(spriteSheet);
+		try (Scanner scanner = new Scanner(tilesFile)) 
 		{
-			Scanner scanner = new Scanner(tilesFile);
 			while(scanner.hasNextLine()) 
 			{
 				String line = scanner.nextLine();
@@ -43,6 +42,9 @@ public class Tiles
 		} 
 		catch(FileNotFoundException e)
 		{
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -85,6 +87,14 @@ public class Tiles
 			System.out.println("TileID " + tileID + " is not within range " + tilesList.size() + ".");
 		}
 		return -1;
+	}
+
+	public SpriteSheet getSpriteSheet() {
+		return spriteSheet;
+	}
+
+	public void setSpriteSheet(SpriteSheet spriteSheet) {
+		this.spriteSheet = spriteSheet;
 	}
 
 	class Tile 

@@ -1,11 +1,8 @@
 package com.marcusman.logic;
 
-import com.marcusman.Game;
 import com.marcusman.utils.GameObject;
 import com.marcusman.utils.Rectangle;
 import com.marcusman.graphics.RenderHandler;
-import com.marcusman.logic.Tiles;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -42,9 +39,8 @@ public class Map
 		int minY = Integer.MAX_VALUE;
 		int maxX = Integer.MIN_VALUE;
 		int maxY = Integer.MIN_VALUE;
-		try 
+		try (Scanner scanner = new Scanner(mapFile)) 
 		{
-			Scanner scanner = new Scanner(mapFile);
 			int currentLine = 0;
 			while(scanner.hasNextLine()) 
 			{
@@ -121,6 +117,9 @@ public class Map
 		}
 		catch(FileNotFoundException e)
 		{
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

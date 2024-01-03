@@ -16,7 +16,6 @@ import com.marcusman.graphics.SpriteSheet;
 import com.marcusman.logic.Tiles;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
@@ -36,6 +35,8 @@ import java.io.File;
 
 public class Game extends JFrame implements Runnable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	public static int alpha = 0xFFFF00DC;
 
@@ -243,10 +244,7 @@ public class Game extends JFrame implements Runnable
 
 	public void run() 
 	{
-		BufferStrategy bufferStrategy = canvas.getBufferStrategy();
-		int i = 0;
-		int x = 0;
-
+		canvas.getBufferStrategy();
 		long lastTime = System.nanoTime(); //long 2^63
 		double nanoSecondConversion = 1000000000.0 / 60; //60 frames per second
 		double changeInSeconds = 0;

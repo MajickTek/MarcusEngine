@@ -4,7 +4,6 @@ import com.marcusman.graphics.AnimatedSprite;
 import com.marcusman.Game;
 import com.marcusman.utils.GameObject;
 import com.marcusman.input.KeyBoardListener;
-import com.marcusman.logic.Map;
 import com.marcusman.utils.Rectangle;
 import com.marcusman.graphics.RenderHandler;
 import com.marcusman.graphics.Sprite;
