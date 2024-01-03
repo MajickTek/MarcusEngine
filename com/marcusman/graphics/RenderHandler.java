@@ -17,15 +17,18 @@ public class RenderHandler
 
 	public RenderHandler(int width, int height) 
 	{
-		GraphicsDevice[] graphicsDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
-		for(int i = 0; i < graphicsDevices.length; i++) {
-			if(maxScreenWidth < graphicsDevices[i].getDisplayMode().getWidth())
-				maxScreenWidth = graphicsDevices[i].getDisplayMode().getWidth();
-
-			if(maxScreenHeight < graphicsDevices[i].getDisplayMode().getHeight())
-				maxScreenHeight = graphicsDevices[i].getDisplayMode().getHeight();
-		}
+		//GraphicsDevice[] graphicsDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+		GraphicsDevice defaultGraphicsDevice = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		
+//		for(int i = 0; i < graphicsDevices.length; i++) {
+//			if(maxScreenWidth < graphicsDevices[i].getDisplayMode().getWidth()-1)
+//				maxScreenWidth = graphicsDevices[i].getDisplayMode().getWidth() - 1;
+//
+//			if(maxScreenHeight < graphicsDevices[i].getDisplayMode().getHeight()-1)
+//				maxScreenHeight = graphicsDevices[i].getDisplayMode().getHeight() - 1;
+//		}
+		maxScreenWidth = defaultGraphicsDevice.getDisplayMode().getWidth()-1;
+		maxScreenHeight = defaultGraphicsDevice.getDisplayMode().getHeight()-1;
 
 		//Create a BufferedImage that will represent our view.
 		view = new BufferedImage(maxScreenWidth, maxScreenHeight, BufferedImage.TYPE_INT_RGB);
