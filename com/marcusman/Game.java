@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
 
-public class Game extends JFrame implements Runnable
+public class Game extends JFrame
 {
 
 	private static final long serialVersionUID = 1L;
@@ -64,8 +64,11 @@ public class Game extends JFrame implements Runnable
 	private int xZoom = 3;
 	private int yZoom = 3;
 
+	private GameLoop gameLoop = new FixedStepGameLoop(this::update, this::render);
+	
 	public Game() 
 	{
+		
 		//Make our program shutdown when we exit out.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -164,6 +167,7 @@ public class Game extends JFrame implements Runnable
 			public void componentShown(ComponentEvent e) {}
 		});
 		canvas.requestFocus();
+		
 	}
 
 	
@@ -251,34 +255,12 @@ public class Game extends JFrame implements Runnable
 		return selectedTileID;
 	}
 
-	public void run() 
-	{
-		canvas.getBufferStrategy();
-		long lastTime = System.nanoTime(); //long 2^63
-		double nanoSecondConversion = 1000000000.0 / 60; //60 frames per second
-		double changeInSeconds = 0;
-
-		while(true) 
-		{
-			long now = System.nanoTime();
-
-			changeInSeconds += (now - lastTime) / nanoSecondConversion;
-			while(changeInSeconds >= 1) {
-				update();
-				changeInSeconds--;
-			}
-
-			render();
-			lastTime = now;
-		}
-
-	}
-
 	public static void main(String[] args) 
 	{
 		Game game = new Game();
-		Thread gameThread = new Thread(game);
-		gameThread.start();
+		game.gameLoop.run();
+		//Thread gameThread = new Thread(game);
+		//gameThread.start();
 	}
 
 	public KeyBoardListener getKeyListener() 
