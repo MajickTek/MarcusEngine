@@ -243,6 +243,10 @@ public class Game extends JFrame
 	{
 		return selectedTileID;
 	}
+	
+	public void setSelectedTile(int id) {
+		this.selectedTileID=id;
+	}
 
 	public static void main(String[] args) 
 	{
