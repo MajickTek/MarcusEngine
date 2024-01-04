@@ -23,8 +23,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 
-import java.lang.Runnable;
-import java.lang.Thread;
 import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
@@ -49,8 +47,6 @@ public class Game extends JFrame
 
 	private int selectedTileID = 2;
 	private int selectedLayer = 0;
-
-	private Rectangle testRectangle = new Rectangle(30, 30, 100, 100);
 
 	private Tiles tiles;
 	private Map map;
@@ -112,13 +108,6 @@ public class Game extends JFrame
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-		
-
-		//testImage = loadImage("GrassTile.png");
-		//testSprite = sheet.getSprite(4,1);
-
-		testRectangle.generateGraphics(2, 12234);
 
 		//Load SDK GUI
 		GUIButton[] buttons = new GUIButton[tiles.size()];
