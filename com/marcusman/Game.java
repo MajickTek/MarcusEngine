@@ -307,4 +307,16 @@ public class Game extends JFrame implements Runnable
 	public int getYZoom() {
 		return yZoom;
 	}
+
+
+	public int getSelectedLayer() {
+		return selectedLayer;
+	}
+
+
+	public void setSelectedLayer(int selectedLayer) {
+		this.selectedLayer = selectedLayer;
+	}
+	
+	
 }
