@@ -1,6 +1,9 @@
 package com.marcusman.logic;
 
 import com.marcusman.graphics.AnimatedSprite;
+
+import java.awt.event.KeyEvent;
+
 import com.marcusman.Game;
 import com.marcusman.utils.GameObject;
 import com.marcusman.input.KeyBoardListener;
@@ -65,7 +68,7 @@ public class Player implements GameObject
 
 		collisionCheckRectangle.x = playerRectangle.x;
 		collisionCheckRectangle.y = playerRectangle.y;
-
+		
 		if(keyListener.left())
 		{
 			newDirection = 1;
@@ -91,6 +94,10 @@ public class Player implements GameObject
 			collisionCheckRectangle.y += speed;
 		}
 
+		if(keyListener.ctrl() && keyListener.key(KeyEvent.VK_S)) {
+			game.getMap().saveMap();
+		}
+		
 		if(newDirection != direction) 
 		{
 			direction = newDirection;
@@ -148,6 +155,9 @@ public class Player implements GameObject
 		return playerRectangle;
 	}
 
+	public Rectangle getCollisionCheckRectangle() {
+		return collisionCheckRectangle;
+	}
 	//Call whenever mouse is clicked on Canvas.
 	public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) { return false; }
 }

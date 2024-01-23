@@ -18,7 +18,6 @@ import com.marcusman.logic.Tiles;
 import java.awt.Canvas;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
@@ -52,7 +51,7 @@ public class Game extends JFrame
 	private Map map;
 
 	private GameObject[] objects;
-	private KeyBoardListener keyListener = new KeyBoardListener(this);
+	private KeyBoardListener keyListener = new KeyBoardListener();
 	private MouseEventListener mouseListener = new MouseEventListener(this);
 
 	private Player player;
@@ -182,12 +181,6 @@ public class Game extends JFrame
 			exception.printStackTrace();
 			return null;
 		}
-	}
-
-	public void handleCTRL(boolean[] keys) 
-	{
-		if(keys[KeyEvent.VK_S])
-			map.saveMap();
 	}
 
 	public void leftClick(int x, int y)

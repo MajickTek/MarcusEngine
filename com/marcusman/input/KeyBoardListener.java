@@ -1,21 +1,20 @@
 package com.marcusman.input;
 
-import com.marcusman.Game;
-
 import java.awt.event.KeyListener;
+import java.util.Arrays;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
 
 public class KeyBoardListener implements KeyListener, FocusListener 
 {
-	public boolean[] keys = new boolean[120];
+	private boolean[] keys;
 
-	private Game game;
 
-	public KeyBoardListener(Game game)
+	public KeyBoardListener()
 	{
-		this.game = game;
+		keys = new boolean[120];
+		Arrays.fill(keys, false);
 	}
 
 	public void keyPressed(KeyEvent event) 
@@ -26,8 +25,6 @@ public class KeyBoardListener implements KeyListener, FocusListener
 		if(keyCode < keys.length)
 			keys[keyCode] = true;
 		
-		if(keys[KeyEvent.VK_CONTROL])
-			game.handleCTRL(keys);
 	}
 
 	public void keyReleased(KeyEvent event)
@@ -68,4 +65,11 @@ public class KeyBoardListener implements KeyListener, FocusListener
 		return keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT];
 	}
 
+	public boolean ctrl() {
+		return keys[KeyEvent.VK_CONTROL];
+	}
+	
+	public boolean key(int keyCode) {
+		return keys[keyCode];
+	}
 }
