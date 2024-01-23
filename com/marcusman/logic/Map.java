@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class Map
 {
-	private Tiles tileSet;
+	Tiles tileSet;
 	private int fillTileID = -1;
 
 	private ArrayList<MappedTile> mappedTiles = new ArrayList<MappedTile>();
@@ -29,7 +29,7 @@ public class Map
 
 	private File mapFile;
 
-	private int numLayers;
+	int numLayers;
 
 	public Map(File mapFile, Tiles tileSet)
 	{
@@ -109,7 +109,7 @@ public class Map
 				assert(blockX >= 0 && blockX < blocks.length && blockY >= 0 && blockY < blocks[0].length);
 
 				if(blocks[blockX][blockY] == null)
-					blocks[blockX][blockY] = new Block();
+					blocks[blockX][blockY] = new Block(this);
 
 				blocks[blockX][blockY].addTile(mappedTile);
 			}
@@ -219,7 +219,7 @@ public class Map
 		if(blockX >= 0 && blockY >= 0 && blockX < blocks.length && blockY < blocks[0].length) 
 		{
 			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Block();
+				blocks[blockX][blockY] = new Block(this);
 
 			blocks[blockX][blockY].addTile(mappedTile);
 		} 
@@ -261,7 +261,7 @@ public class Map
 			blockX = (tileX - blockStartX)/blockWidth;
 			blockY = (tileY - blockStartY)/blockHeight;
 			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Block();
+				blocks[blockX][blockY] = new Block(this);
 			blocks[blockX][blockY].addTile(mappedTile);
 		}
 	}
@@ -399,76 +399,5 @@ public class Map
 			if(objects[i].getLayer() == Integer.MAX_VALUE)
 				objects[i].render(renderer, xZoom, yZoom);
 
-	}
-
-	//Block represents a 6/6 block of tiles
-	@SuppressWarnings("unchecked")
-	private class Block
-	{
-		public ArrayList<MappedTile>[] mappedTilesByLayer;
-
-		public Block() 
-		{
-			mappedTilesByLayer = new ArrayList[numLayers];
-			for(int i = 0; i < mappedTilesByLayer.length; i++)
-				mappedTilesByLayer[i] = new ArrayList<MappedTile>();
-		}
-
-		public void render(RenderHandler renderer, int layer, int tileWidth, int tileHeight, int xZoom, int yZoom)
-		 {
-			if(mappedTilesByLayer.length > layer) 
-			{
-				ArrayList<MappedTile> mappedTiles = mappedTilesByLayer[layer];
-				for(int tileIndex = 0; tileIndex < mappedTiles.size(); tileIndex++)
-				{
-					MappedTile mappedTile = mappedTiles.get(tileIndex);
-					tileSet.renderTile(mappedTile.id, renderer, mappedTile.x * tileWidth, mappedTile.y * tileHeight, xZoom, yZoom);
-				}
-			}
-		}
-
-		public void addTile(MappedTile tile) {
-			if(mappedTilesByLayer.length <= tile.layer) 
-			{
-				ArrayList<MappedTile>[] newTilesByLayer = new ArrayList[tile.layer + 1];
-
-				int i = 0;
-				for(i = 0; i < mappedTilesByLayer.length; i++)
-					newTilesByLayer[i] = mappedTilesByLayer[i];
-				for(; i < newTilesByLayer.length; i++)
-					newTilesByLayer[i] = new ArrayList<MappedTile>();
-
-				mappedTilesByLayer = newTilesByLayer;
-			}
-			mappedTilesByLayer[tile.layer].add(tile);
-		}
-
-		public void removeTile(MappedTile tile) {
-			mappedTilesByLayer[tile.layer].remove(tile);
-		}
-
-		public MappedTile getTile(int layer, int tileX, int tileY) 
-		{
-			for(MappedTile tile : mappedTilesByLayer[layer]) 
-			{
-				if(tile.x == tileX && tile.y == tileY)
-					return tile;
-			}
-			return null;
-		}
-	}
-
-	//Tile ID in the tileSet and the position of the tile in the map
-	private class MappedTile
-	{
-		public int layer, id, x, y;
-
-		public MappedTile(int layer, int id, int x, int y)
-		{
-			this.layer = layer;
-			this.id = id;
-			this.x = x;
-			this.y = y;
-		}
 	}
 }
