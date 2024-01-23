@@ -5,27 +5,31 @@ import java.util.ArrayList;
 import com.marcusman.graphics.RenderHandler;
 
 //Block represents a 6/6 block of tiles
-@SuppressWarnings("unchecked") class Block
+ class Block
 {
 	/**
 	 * 
 	 */
 	private final Map map;
-	public ArrayList<MappedTile>[] mappedTilesByLayer;
+	
+	public ArrayList<ArrayList<MappedTile>> mappedTilesByLayer;
 
 	public Block(Map map) 
 	{
 		this.map = map;
-		mappedTilesByLayer = new ArrayList[this.map.numLayers];
-		for(int i = 0; i < mappedTilesByLayer.length; i++)
-			mappedTilesByLayer[i] = new ArrayList<MappedTile>();
+		
+		mappedTilesByLayer = new ArrayList<>(this.map.numLayers);
+		for(int i = 0; i < this.map.numLayers; i++) {
+			
+			mappedTilesByLayer.add( new ArrayList<MappedTile>());
+		}
 	}
 
 	public void render(RenderHandler renderer, int layer, int tileWidth, int tileHeight, int xZoom, int yZoom)
 	 {
-		if(mappedTilesByLayer.length > layer) 
+		if(mappedTilesByLayer.size() > layer) 
 		{
-			ArrayList<MappedTile> mappedTiles = mappedTilesByLayer[layer];
+			ArrayList<MappedTile> mappedTiles = mappedTilesByLayer.get(layer);
 			for(int tileIndex = 0; tileIndex < mappedTiles.size(); tileIndex++)
 			{
 				MappedTile mappedTile = mappedTiles.get(tileIndex);
@@ -35,28 +39,28 @@ import com.marcusman.graphics.RenderHandler;
 	}
 
 	public void addTile(MappedTile tile) {
-		if(mappedTilesByLayer.length <= tile.layer) 
+		if(mappedTilesByLayer.size() <= tile.layer) 
 		{
-			ArrayList<MappedTile>[] newTilesByLayer = new ArrayList[tile.layer + 1];
-
+			
+			ArrayList<ArrayList<MappedTile>> newTilesByLayer = new ArrayList<>(tile.layer+1);
 			int i = 0;
-			for(i = 0; i < mappedTilesByLayer.length; i++)
-				newTilesByLayer[i] = mappedTilesByLayer[i];
-			for(; i < newTilesByLayer.length; i++)
-				newTilesByLayer[i] = new ArrayList<MappedTile>();
+			for(i = 0; i < mappedTilesByLayer.size(); i++)
+				newTilesByLayer.set(i, mappedTilesByLayer.get(i));
+			for(; i < newTilesByLayer.size(); i++)
+				newTilesByLayer.set(i, new ArrayList<MappedTile>());
 
 			mappedTilesByLayer = newTilesByLayer;
 		}
-		mappedTilesByLayer[tile.layer].add(tile);
+		mappedTilesByLayer.get(tile.layer).add(tile);
 	}
 
 	public void removeTile(MappedTile tile) {
-		mappedTilesByLayer[tile.layer].remove(tile);
+		mappedTilesByLayer.get(tile.layer).remove(tile);
 	}
 
 	public MappedTile getTile(int layer, int tileX, int tileY) 
 	{
-		for(MappedTile tile : mappedTilesByLayer[layer]) 
+		for(MappedTile tile : mappedTilesByLayer.get(layer)) 
 		{
 			if(tile.x == tileX && tile.y == tileY)
 				return tile;
