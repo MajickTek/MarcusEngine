@@ -96,18 +96,4 @@ public class Tiles
 	public void setSpriteSheet(SpriteSheet spriteSheet) {
 		this.spriteSheet = spriteSheet;
 	}
-
-	class Tile 
-	{
-		public String tileName;
-		public Sprite sprite;
-		public boolean collidable = false;
-		public int collisionType = -1;
-
-		public Tile(String tileName, Sprite sprite) 
-		{
-			this.tileName = tileName;
-			this.sprite = sprite;
-		}
-	}
 }

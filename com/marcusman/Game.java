@@ -33,7 +33,7 @@ import java.io.File;
 
 public class Game extends JFrame
 {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	public static int alpha = 0xFFFF00DC;
@@ -63,6 +63,7 @@ public class Game extends JFrame
 	
 	public Game() 
 	{
+		GameInstance.setInstance(this);
 		
 		//Make our program shutdown when we exit out.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

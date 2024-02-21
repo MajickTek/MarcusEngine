@@ -17,13 +17,13 @@ public class Map
 	private int fillTileID = -1;
 
 	private ArrayList<MappedTile> mappedTiles = new ArrayList<MappedTile>();
-	private Chunk[][] blocks;
-	private int blockStartX, blockStartY;
+	private Chunk[][] chunks;
+	private int chunkStartX, chunkStartY;
 
-	private int blockWidth = 6;
-	private int blockHeight = 6;
-	private int blockPixelWidth = blockWidth * 16;
-	private int blockPixelHeight = blockHeight * 16;
+	private int chunkWidth = 6;
+	private int chunkHeight = 6;
+	private int chunkPixelWidth = chunkWidth * 16;
+	private int chunkPixelHeight = chunkHeight * 16;
 
 	private HashMap<Integer, String> comments = new HashMap<Integer, String>();
 
@@ -89,29 +89,29 @@ public class Map
 			}
 
 			if(mappedTiles.size() == 0) {
-				minX = -blockWidth;
-				minY = -blockHeight;
-				maxX = blockWidth;
-				maxY = blockHeight;
+				minX = -chunkWidth;
+				minY = -chunkHeight;
+				maxX = chunkWidth;
+				maxY = chunkHeight;
 			} 
 
-			blockStartX = minX;
-			blockStartY = minY;
-			int blockSizeX = (maxX + blockWidth) - minX;
-			int blockSizeY = (maxY + blockHeight) - minY;
-			blocks = new Chunk[blockSizeX][blockSizeY];
+			chunkStartX = minX;
+			chunkStartY = minY;
+			int chunkSizeX = (maxX + chunkWidth) - minX;
+			int chunkSizeY = (maxY + chunkHeight) - minY;
+			chunks = new Chunk[chunkSizeX][chunkSizeY];
 
-			//Loop through all mappedTiles in the entire level and add them to the blocks.
+			//Loop through all mappedTiles in the entire level and add them to the chunks.
 			for(int i = 0; i < mappedTiles.size(); i++) {
 				MappedTile mappedTile = mappedTiles.get(i);
-				int blockX = (mappedTile.x - minX)/blockWidth;
-				int blockY = (mappedTile.y - minY)/blockHeight;
-				assert(blockX >= 0 && blockX < blocks.length && blockY >= 0 && blockY < blocks[0].length);
+				int chunkX = (mappedTile.x - minX)/chunkWidth;
+				int chunkY = (mappedTile.y - minY)/chunkHeight;
+				assert(chunkX >= 0 && chunkX < chunks.length && chunkY >= 0 && chunkY < chunks[0].length);
 
-				if(blocks[blockX][blockY] == null)
-					blocks[blockX][blockY] = new Chunk(this);
+				if(chunks[chunkX][chunkY] == null)
+					chunks[chunkX][chunkY] = new Chunk(this);
 
-				blocks[blockX][blockY].addTile(mappedTile);
+				chunks[chunkX][chunkY].addTile(mappedTile);
 			}
 
 		}
@@ -119,24 +119,24 @@ public class Map
 		{
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch chunk
 			e.printStackTrace();
 		}
 	}
 
 	public MappedTile getTile(int layer, int tileX, int tileY) {
-		int blockX = (tileX - blockStartX)/blockWidth;
-		int blockY = (tileY - blockStartY)/blockHeight;
+		int chunkX = (tileX - chunkStartX)/chunkWidth;
+		int chunkY = (tileY - chunkStartY)/chunkHeight;
 
-		if(blockX < 0 || blockX >= blocks.length || blockY < 0 || blockY >= blocks[0].length)
+		if(chunkX < 0 || chunkX >= chunks.length || chunkY < 0 || chunkY >= chunks[0].length)
 			return null;
 
-		Chunk block = blocks[blockX][blockY];
+		Chunk chunk = chunks[chunkX][chunkY];
 
-		if(block == null)
+		if(chunk == null)
 			return null;
 
-		return block.getTile(layer, tileX, tileY);
+		return chunk.getTile(layer, tileX, tileY);
 	}
 
 	public boolean checkCollision(Rectangle rect, int layer, int xZoom, int yZoom) {
@@ -213,56 +213,56 @@ public class Map
 		MappedTile mappedTile = new MappedTile(layer, tileID, tileX, tileY);
 		mappedTiles.add(mappedTile);
 
-		//Add to blocks
-		int blockX = (tileX - blockStartX)/blockWidth;
-		int blockY = (tileY - blockStartY)/blockHeight;
-		if(blockX >= 0 && blockY >= 0 && blockX < blocks.length && blockY < blocks[0].length) 
+		//Add to chunks
+		int chunkX = (tileX - chunkStartX)/chunkWidth;
+		int chunkY = (tileY - chunkStartY)/chunkHeight;
+		if(chunkX >= 0 && chunkY >= 0 && chunkX < chunks.length && chunkY < chunks[0].length) 
 		{
-			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Chunk(this);
+			if(chunks[chunkX][chunkY] == null)
+				chunks[chunkX][chunkY] = new Chunk(this);
 
-			blocks[blockX][blockY].addTile(mappedTile);
+			chunks[chunkX][chunkY].addTile(mappedTile);
 		} 
 		else 
 		{
-			int newMinX = blockStartX;
-			int newMinY = blockStartY;
-			int newLengthX = blocks.length;
-			int newLengthY = blocks[0].length;
+			int newMinX = chunkStartX;
+			int newMinY = chunkStartY;
+			int newLengthX = chunks.length;
+			int newLengthY = chunks[0].length;
 
-			if(blockX < 0) 
+			if(chunkX < 0) 
 			{
-				int increaseAmount = blockX * -1;
-				newMinX = blockStartX - blockWidth*increaseAmount;
+				int increaseAmount = chunkX * -1;
+				newMinX = chunkStartX - chunkWidth*increaseAmount;
 				newLengthX = newLengthX + increaseAmount;
-			} else if(blockX >= blocks.length)
-				newLengthX = blocks.length + blockX;
+			} else if(chunkX >= chunks.length)
+				newLengthX = chunks.length + chunkX;
 
-			if(blockY < 0) 
+			if(chunkY < 0) 
 			{
-				int increaseAmount = blockY * -1;
-				newMinY = blockStartY - blockHeight*increaseAmount;
+				int increaseAmount = chunkY * -1;
+				newMinY = chunkStartY - chunkHeight*increaseAmount;
 				newLengthY = newLengthY + increaseAmount;
-			} else if(blockY >= blocks[0].length)
-				newLengthY = blocks[0].length + blockY;
+			} else if(chunkY >= chunks[0].length)
+				newLengthY = chunks[0].length + chunkY;
 
-			Chunk[][] newBlocks = new Chunk[newLengthX][newLengthY];
+			Chunk[][] newchunks = new Chunk[newLengthX][newLengthY];
 
-			for(int x = 0; x < blocks.length; x++)
-				for(int y = 0; y < blocks[0].length; y++)
-					if(blocks[x][y] != null) 
+			for(int x = 0; x < chunks.length; x++)
+				for(int y = 0; y < chunks[0].length; y++)
+					if(chunks[x][y] != null) 
 					{
-						newBlocks[x + (blockStartX - newMinX)/blockWidth][y + (blockStartY - newMinY)/blockHeight] = blocks[x][y];
+						newchunks[x + (chunkStartX - newMinX)/chunkWidth][y + (chunkStartY - newMinY)/chunkHeight] = chunks[x][y];
 					}
 
-			blocks = newBlocks;
-			blockStartX = newMinX;
-			blockStartY = newMinY;
-			blockX = (tileX - blockStartX)/blockWidth;
-			blockY = (tileY - blockStartY)/blockHeight;
-			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Chunk(this);
-			blocks[blockX][blockY].addTile(mappedTile);
+			chunks = newchunks;
+			chunkStartX = newMinX;
+			chunkStartY = newMinY;
+			chunkX = (tileX - chunkStartX)/chunkWidth;
+			chunkY = (tileY - chunkStartY)/chunkHeight;
+			if(chunks[chunkX][chunkY] == null)
+				chunks[chunkX][chunkY] = new Chunk(this);
+			chunks[chunkX][chunkY].addTile(mappedTile);
 		}
 	}
 
@@ -274,11 +274,11 @@ public class Map
 			if(mappedTile.layer == layer && mappedTile.x == tileX && mappedTile.y == tileY) {
 				mappedTiles.remove(i);
 
-				//Remove from block
-				int blockX = (tileX - blockStartX)/blockWidth;
-				int blockY = (tileY - blockStartY)/blockHeight;
-				assert(blockX >= 0 && blockY >= 0 && blockX < blocks.length && blockY < blocks[0].length);
-				blocks[blockX][blockY].removeTile(mappedTile);
+				//Remove from chunk
+				int chunkX = (tileX - chunkStartX)/chunkWidth;
+				int chunkY = (tileY - chunkStartY)/chunkHeight;
+				assert(chunkX >= 0 && chunkY >= 0 && chunkX < chunks.length && chunkY < chunks[0].length);
+				chunks[chunkX][chunkY].removeTile(mappedTile);
 			}
 		}
 	}
@@ -346,30 +346,30 @@ public class Map
 			int bottomRightX = renderer.getCamera().x + renderer.getCamera().w;
 			int bottomRightY = renderer.getCamera().y + renderer.getCamera().h;
 
-			int leftBlockX = (topLeftX/tileWidth - blockStartX - 16)/blockWidth;
-			int blockX = leftBlockX;
-			int blockY = (topLeftY/tileHeight - blockStartY - 16)/blockHeight;
+			int leftchunkX = (topLeftX/tileWidth - chunkStartX - 16)/chunkWidth;
+			int chunkX = leftchunkX;
+			int chunkY = (topLeftY/tileHeight - chunkStartY - 16)/chunkHeight;
 			int pixelX = topLeftX;
 			int pixelY = topLeftY;
 
 			while(pixelX < bottomRightX && pixelY < bottomRightY)
 			{
 
-				if(blockX >= 0 && blockY >= 0 && blockX < blocks.length && blockY < blocks[0].length) 
+				if(chunkX >= 0 && chunkY >= 0 && chunkX < chunks.length && chunkY < chunks[0].length) 
 				{
-					if(blocks[blockX][blockY] != null)
-						blocks[blockX][blockY].render(renderer, layer, tileWidth, tileHeight, xZoom, yZoom);
+					if(chunks[chunkX][chunkY] != null)
+						chunks[chunkX][chunkY].render(renderer, layer, tileWidth, tileHeight, xZoom, yZoom);
 				}
 
-				blockX++;
-				pixelX += blockPixelWidth;
+				chunkX++;
+				pixelX += chunkPixelWidth;
 
 				if(pixelX > bottomRightX) 
 				{
 					pixelX = topLeftX;
-					blockX = leftBlockX;
-					blockY++;
-					pixelY += blockPixelHeight;
+					chunkX = leftchunkX;
+					chunkY++;
+					pixelY += chunkPixelHeight;
 					if(pixelY > bottomRightY)
 						break;
 				}
