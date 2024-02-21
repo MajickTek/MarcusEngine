@@ -1,10 +1,13 @@
 package com.marcusman;
 
+import java.util.function.Consumer;
+
 public class TickBasedGameLoop extends GameLoop {
-	private final Runnable update,render;
+	private final Runnable update;
+	private final Consumer<Float> render;
 	private Timer timer;
 	
-	public TickBasedGameLoop(Runnable update, Runnable render) {
+	public TickBasedGameLoop(Runnable update, Consumer<Float> render) {
 		this.update=update;
 		this.render=render;
 	}
@@ -20,7 +23,7 @@ public class TickBasedGameLoop extends GameLoop {
 				update.run();
 			}
 			
-			render.run();
+			render.accept(this.timer.partialTicks);
 			
 		}
 	}

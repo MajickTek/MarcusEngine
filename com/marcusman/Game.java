@@ -210,7 +210,7 @@ public class Game extends JFrame
 	}
 
 
-	public void render() 
+	public void render(float partialTicks) 
 	{
 			BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 			Graphics graphics = bufferStrategy.getDrawGraphics();
@@ -219,7 +219,7 @@ public class Game extends JFrame
 			map.render(renderer, objects, xZoom, yZoom);
 
 			renderer.render(graphics);
-
+			
 			graphics.dispose();
 			bufferStrategy.show();
 			renderer.clear();
