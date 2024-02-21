@@ -30,7 +30,7 @@ public class KeyBoardListener implements KeyListener, FocusListener
 	public void keyReleased(KeyEvent event)
 	{
 		int keyCode = event.getKeyCode();
-
+		
 		if(keyCode < keys.length)
 			keys[keyCode] = false;
 	}

@@ -5,8 +5,10 @@ import com.marcusman.Game;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
-public class MouseEventListener implements MouseListener, MouseMotionListener 
+public class MouseEventListener implements MouseListener, MouseMotionListener, MouseWheelListener 
 {
 	private Game game;
 
@@ -51,6 +53,12 @@ public class MouseEventListener implements MouseListener, MouseMotionListener
 
 	public void mouseReleased(MouseEvent event)
 	{
+		
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		
 		
 	}
 }

@@ -59,7 +59,7 @@ public class Game extends JFrame
 	private int xZoom = 3;
 	private int yZoom = 3;
 
-	private GameLoop gameLoop = new FixedStepGameLoop(this::update, this::render);
+	private GameLoop gameLoop = new TickBasedGameLoop(this::update, this::render);
 	
 	public Game() 
 	{
@@ -132,6 +132,7 @@ public class Game extends JFrame
 		canvas.addFocusListener(keyListener);
 		canvas.addMouseListener(mouseListener);
 		canvas.addMouseMotionListener(mouseListener);
+		canvas.addMouseWheelListener(mouseListener);
 
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
@@ -217,9 +218,6 @@ public class Game extends JFrame
 
 			map.render(renderer, objects, xZoom, yZoom);
 
-			// for(int i = 0; i < objects.length; i++) 
-			// 	objects[i].render(renderer, xZoom, yZoom);
-
 			renderer.render(graphics);
 
 			graphics.dispose();
@@ -245,8 +243,6 @@ public class Game extends JFrame
 	{
 		Game game = new Game();
 		game.gameLoop.run();
-		//Thread gameThread = new Thread(game);
-		//gameThread.start();
 	}
 
 	public KeyBoardListener getKeyListener() 

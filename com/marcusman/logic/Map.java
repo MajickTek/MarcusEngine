@@ -400,4 +400,8 @@ public class Map
 				objects[i].render(renderer, xZoom, yZoom);
 
 	}
+	
+	public int getNumLayers() {
+		return numLayers;
+	}
 }
