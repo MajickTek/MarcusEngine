@@ -4,17 +4,15 @@ import java.util.ArrayList;
 
 import com.marcusman.graphics.RenderHandler;
 
-//Block represents a 6/6 block of tiles
- class Block
+//Chunk represents a 6/6 area of tiles
+ class Chunk
 {
-	/**
-	 * 
-	 */
+	
 	private final Map map;
 	
 	public ArrayList<ArrayList<MappedTile>> mappedTilesByLayer;
 
-	public Block(Map map) 
+	public Chunk(Map map) 
 	{
 		this.map = map;
 		

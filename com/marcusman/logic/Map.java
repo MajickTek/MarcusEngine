@@ -17,7 +17,7 @@ public class Map
 	private int fillTileID = -1;
 
 	private ArrayList<MappedTile> mappedTiles = new ArrayList<MappedTile>();
-	private Block[][] blocks;
+	private Chunk[][] blocks;
 	private int blockStartX, blockStartY;
 
 	private int blockWidth = 6;
@@ -99,7 +99,7 @@ public class Map
 			blockStartY = minY;
 			int blockSizeX = (maxX + blockWidth) - minX;
 			int blockSizeY = (maxY + blockHeight) - minY;
-			blocks = new Block[blockSizeX][blockSizeY];
+			blocks = new Chunk[blockSizeX][blockSizeY];
 
 			//Loop through all mappedTiles in the entire level and add them to the blocks.
 			for(int i = 0; i < mappedTiles.size(); i++) {
@@ -109,7 +109,7 @@ public class Map
 				assert(blockX >= 0 && blockX < blocks.length && blockY >= 0 && blockY < blocks[0].length);
 
 				if(blocks[blockX][blockY] == null)
-					blocks[blockX][blockY] = new Block(this);
+					blocks[blockX][blockY] = new Chunk(this);
 
 				blocks[blockX][blockY].addTile(mappedTile);
 			}
@@ -131,7 +131,7 @@ public class Map
 		if(blockX < 0 || blockX >= blocks.length || blockY < 0 || blockY >= blocks[0].length)
 			return null;
 
-		Block block = blocks[blockX][blockY];
+		Chunk block = blocks[blockX][blockY];
 
 		if(block == null)
 			return null;
@@ -219,7 +219,7 @@ public class Map
 		if(blockX >= 0 && blockY >= 0 && blockX < blocks.length && blockY < blocks[0].length) 
 		{
 			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Block(this);
+				blocks[blockX][blockY] = new Chunk(this);
 
 			blocks[blockX][blockY].addTile(mappedTile);
 		} 
@@ -246,7 +246,7 @@ public class Map
 			} else if(blockY >= blocks[0].length)
 				newLengthY = blocks[0].length + blockY;
 
-			Block[][] newBlocks = new Block[newLengthX][newLengthY];
+			Chunk[][] newBlocks = new Chunk[newLengthX][newLengthY];
 
 			for(int x = 0; x < blocks.length; x++)
 				for(int y = 0; y < blocks[0].length; y++)
@@ -261,7 +261,7 @@ public class Map
 			blockX = (tileX - blockStartX)/blockWidth;
 			blockY = (tileY - blockStartY)/blockHeight;
 			if(blocks[blockX][blockY] == null)
-				blocks[blockX][blockY] = new Block(this);
+				blocks[blockX][blockY] = new Chunk(this);
 			blocks[blockX][blockY].addTile(mappedTile);
 		}
 	}

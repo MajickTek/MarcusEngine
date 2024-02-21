@@ -9,14 +9,23 @@ public class Timer {
 	
 	private long lastTime = System.nanoTime();
 	
+	/**
+	 * Scale the tick speed
+	 */
 	public float timeScale=1.0f;
 	
 	public float fps = 0f;
 	
+	/**
+	 * Time passed since game update
+	 */
 	public float passedTime = 0f;
 	
 	public int ticks;
 	
+	/**
+	 * Overflow of current tick, caused by casting the past time to an integer
+	 */
 	public float partialTicks;
 	
 	public Timer(float tps) {
@@ -41,6 +50,7 @@ public class Timer {
 		this.partialTicks = this.passedTime;
 	}
 	
+	//TODO: Move or remove
 	private static long clamp(long val, long min, long max) {
 		if(min > max) throw new IllegalArgumentException(min + " > " + max);
 		
