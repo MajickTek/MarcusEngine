@@ -17,17 +17,7 @@ public class RenderHandler
 
 	public RenderHandler(int width, int height) 
 	{
-		//GraphicsDevice[] graphicsDevices = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 		GraphicsDevice defaultGraphicsDevice = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		
-//		for(int i = 0; i < graphicsDevices.length; i++) {
-//			if(maxScreenWidth < graphicsDevices[i].getDisplayMode().getWidth()-1)
-//				maxScreenWidth = graphicsDevices[i].getDisplayMode().getWidth() - 1;
-//
-//			if(maxScreenHeight < graphicsDevices[i].getDisplayMode().getHeight()-1)
-//				maxScreenHeight = graphicsDevices[i].getDisplayMode().getHeight() - 1;
-//		}
-		
 		
 		//subtracting 1 from the size allows opening the window in fullscreen while avoiding graphical artifacts
 		maxScreenWidth = defaultGraphicsDevice.getDisplayMode().getWidth()-1;

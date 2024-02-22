@@ -9,6 +9,7 @@ import com.marcusman.logic.Map;
 import com.marcusman.input.MouseEventListener;
 import com.marcusman.logic.Player;
 import com.marcusman.utils.Rectangle;
+import com.marcusman.utils.UnitConverter;
 import com.marcusman.graphics.RenderHandler;
 import com.marcusman.graphics.gui.SDKButton;
 import com.marcusman.graphics.Sprite;
@@ -36,7 +37,7 @@ public class Game extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public static int alpha = 0xFFFF00DC;
-	public static final int TILE_SIZE=16;
+	public static final int TILE_SIZE=UnitConverter.TILE_SIZE;
 	
 	private Canvas canvas = new Canvas();
 	private RenderHandler renderer;
@@ -61,7 +62,7 @@ public class Game extends JFrame {
 
 	private Timer timer;
 	private volatile GameStatus status;
-
+	
 	public Game() {
 		GameInstance.setInstance(this);
 		timer = new Timer(60);
@@ -166,8 +167,10 @@ public class Game extends JFrame {
 	}
 
 	public void update() {
-		for (int i = 0; i < objects.length; i++)
-			objects[i].update(this);
+		
+			for (int i = 0; i < objects.length; i++)
+				objects[i].update(this);
+		
 	}
 
 	private BufferedImage loadImage(String path) {
@@ -265,15 +268,19 @@ public class Game extends JFrame {
 	}
 
 	public void start() {
-		status = GameStatus.RUNNING;
-		Thread gameThread = new Thread(this::gameLoop);
-		gameThread.start();
+		if(status.equals(GameStatus.RUNNING)) {
+			throw new IllegalStateException("The game is already running!");
+		} else {
+			status = GameStatus.RUNNING;
+			Thread gameThread = new Thread(this::gameLoop);
+			gameThread.start();
+		}
 	}
 
 	public void stop() {
 		status = GameStatus.STOPPED;
 	}
-
+	
 	private void gameLoop() {
 		int frames = 0;
 		long lastTime = System.currentTimeMillis();
