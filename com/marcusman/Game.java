@@ -59,12 +59,14 @@ public class Game extends JFrame
 	private int xZoom = 3;
 	private int yZoom = 3;
 
-	private GameLoop gameLoop = new TickBasedGameLoop(this::update, this::render);
+	private Timer timer;
+	private volatile GameStatus status;
 	
 	public Game() 
 	{
 		GameInstance.setInstance(this);
-		
+		timer = new Timer(60);
+		status = GameStatus.STOPPED;
 		//Make our program shutdown when we exit out.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -243,7 +245,7 @@ public class Game extends JFrame
 	public static void main(String[] args) 
 	{
 		Game game = new Game();
-		game.gameLoop.run();
+		game.start();
 	}
 
 	public KeyBoardListener getKeyListener() 
@@ -282,6 +284,39 @@ public class Game extends JFrame
 	public void setSelectedLayer(int selectedLayer) {
 		this.selectedLayer = selectedLayer;
 	}
+
+
+	public void start() {
+		status = GameStatus.RUNNING;
+		Thread gameThread = new Thread(this::gameLoop);
+		gameThread.start();
+	}
 	
+	public void stop() {
+		status = GameStatus.STOPPED;
+	}
 	
+	private void gameLoop() {
+		int frames=0;
+		long lastTime = System.currentTimeMillis();
+		while(isGameRunning()) {
+			this.timer.advanceTime();
+			for(int i = 0; i < this.timer.ticks; ++i) {
+				update();
+			}
+			render();
+			
+			frames++;
+			while(System.currentTimeMillis() >= lastTime+1000L) {
+				System.out.println("FPS: "+frames);
+				lastTime+=1000L;
+				frames=0;
+			}
+		}
+	}
+
+
+	public boolean isGameRunning() {
+		return status.equals(GameStatus.RUNNING);
+	}
 }

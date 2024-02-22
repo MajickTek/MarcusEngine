@@ -17,7 +17,7 @@ public class Timer {
 	public float fps = 0f;
 	
 	/**
-	 * Time passed since game update
+	 * Time passed since game update (essentially,delta)
 	 */
 	public float passedTime = 0f;
 	
