@@ -31,13 +31,13 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
 
-public class Game extends JFrame
-{
-	
+public class Game extends JFrame {
+
 	private static final long serialVersionUID = 1L;
 
 	public static int alpha = 0xFFFF00DC;
-
+	public static final int TILE_SIZE=16;
+	
 	private Canvas canvas = new Canvas();
 	private RenderHandler renderer;
 
@@ -61,76 +61,74 @@ public class Game extends JFrame
 
 	private Timer timer;
 	private volatile GameStatus status;
-	
-	public Game() 
-	{
+
+	public Game() {
 		GameInstance.setInstance(this);
 		timer = new Timer(60);
 		status = GameStatus.STOPPED;
-		//Make our program shutdown when we exit out.
+
+		// Make our program shutdown when we exit out.
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//Set the position and size of our frame.
-		setBounds(0,0, 1000, 800);
+		// Set the position and size of our frame.
+		setBounds(0, 0, 1000, 800);
 
-		//Put our frame in the center of the screen.
+		// Put our frame in the center of the screen.
 		setLocationRelativeTo(null);
 
-		//Add our graphics compoent
+		// Add our graphics compoent
 		add(canvas);
 
-		//Make our frame visible.
+		// Make our frame visible.
 		setVisible(true);
 
-		//Create our object for buffer strategy.
+		// Create our object for buffer strategy.
 		canvas.createBufferStrategy(3);
 
 		renderer = new RenderHandler(getWidth(), getHeight());
 
-		//Load Assets
+		// Load Assets
 		BufferedImage sheetImage = loadImage("/res/Tiles1.png");
 		sheet = new SpriteSheet(sheetImage);
-		sheet.loadSprites(16, 16);
+		sheet.loadSprites(TILE_SIZE, TILE_SIZE);
 
 		BufferedImage playerSheetImage = loadImage("/res/Player.png");
 		playerSheet = new SpriteSheet(playerSheetImage);
 		playerSheet.loadSprites(20, 26);
 
-		//Player Animated Sprites
+		// Player Animated Sprites
 		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
 
-		
 		try {
-			//Load Tiles
-			tiles = new Tiles(new File(Game.class.getResource("/res/Tiles.txt").toURI()),sheet);
-		
-			//Load Map
+			// Load Tiles
+			tiles = new Tiles(new File(Game.class.getResource("/res/Tiles.txt").toURI()), sheet);
+
+			// Load Map
 			map = new Map(new File(Game.class.getResource("/res/Map.txt").toURI()), tiles);
 		} catch (URISyntaxException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-		//Load SDK GUI
+		// Load SDK GUI
 		GUIButton[] buttons = new GUIButton[tiles.size()];
 		Sprite[] tileSprites = tiles.getSprites();
 
-		for(int i = 0; i < buttons.length; i++)
-		{
-			Rectangle tileRectangle = new Rectangle(0, i*(16*xZoom + 2), 16*xZoom, 16*yZoom);
+		for (int i = 0; i < buttons.length; i++) {
+			Rectangle tileRectangle = new Rectangle(0, i * (TILE_SIZE * xZoom + 2), TILE_SIZE * xZoom, TILE_SIZE * yZoom);
 
 			buttons[i] = new SDKButton(this, i, tileSprites[i], tileRectangle);
 		}
 
 		GUI gui = new GUI(buttons, 5, 5, true);
 
-		//Load Objects
+		// Load Objects
 		objects = new GameObject[2];
 		player = new Player(playerAnimations, xZoom, yZoom);
 		objects[0] = player;
 		objects[1] = gui;
 
-		//Add Listeners
+		// Add Listeners
 		canvas.addKeyListener(keyListener);
 		canvas.addFocusListener(keyListener);
 		canvas.addMouseListener(mouseListener);
@@ -142,10 +140,10 @@ public class Game extends JFrame
 				int newWidth = canvas.getWidth();
 				int newHeight = canvas.getHeight();
 
-				if(newWidth > renderer.getMaxWidth())
+				if (newWidth > renderer.getMaxWidth())
 					newWidth = renderer.getMaxWidth();
 
-				if(newHeight > renderer.getMaxHeight())
+				if (newHeight > renderer.getMaxHeight())
 					newHeight = renderer.getMaxHeight();
 
 				renderer.getCamera().w = newWidth;
@@ -154,112 +152,95 @@ public class Game extends JFrame
 				pack();
 			}
 
-			public void componentHidden(ComponentEvent e) {}
-			public void componentMoved(ComponentEvent e) {}
-			public void componentShown(ComponentEvent e) {}
+			public void componentHidden(ComponentEvent e) {
+			}
+
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			public void componentShown(ComponentEvent e) {
+			}
 		});
 		canvas.requestFocus();
-		
+
 	}
 
-	
-	public void update() 
-	{
-		for(int i = 0; i < objects.length; i++) 
+	public void update() {
+		for (int i = 0; i < objects.length; i++)
 			objects[i].update(this);
 	}
 
-
-	private BufferedImage loadImage(String path)
-	{
-		try 
-		{
+	private BufferedImage loadImage(String path) {
+		try {
 			BufferedImage loadedImage = ImageIO.read(Game.class.getResource(path));
-			BufferedImage formattedImage = new BufferedImage(loadedImage.getWidth(), loadedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+			BufferedImage formattedImage = new BufferedImage(loadedImage.getWidth(), loadedImage.getHeight(),
+					BufferedImage.TYPE_INT_RGB);
 			formattedImage.getGraphics().drawImage(loadedImage, 0, 0, null);
 
 			return formattedImage;
-		}
-		catch(IOException exception) 
-		{
+		} catch (IOException exception) {
 			exception.printStackTrace();
 			return null;
 		}
 	}
 
-	public void leftClick(int x, int y)
-	{
+	public void leftClick(int x, int y) {
 
 		Rectangle mouseRectangle = new Rectangle(x, y, 1, 1);
 		boolean stoppedChecking = false;
 
-		for(int i = 0; i < objects.length; i++)
-			if(!stoppedChecking)
+		for (int i = 0; i < objects.length; i++)
+			if (!stoppedChecking)
 				stoppedChecking = objects[i].handleMouseClick(mouseRectangle, renderer.getCamera(), xZoom, yZoom);
 
-		if(!stoppedChecking) 
-		{
-			x = (int) Math.floor((x + renderer.getCamera().x)/(16.0 * xZoom));
-			y = (int) Math.floor((y + renderer.getCamera().y)/(16.0 * yZoom));
+		if (!stoppedChecking) {
+			x = (int) Math.floor((x + renderer.getCamera().x) / ((float)TILE_SIZE * xZoom));
+			y = (int) Math.floor((y + renderer.getCamera().y) / ((float)TILE_SIZE * yZoom));
 			map.setTile(selectedLayer, x, y, selectedTileID);
 		}
 	}
 
-	public void rightClick(int x, int y)
-	{
-		x = (int) Math.floor((x + renderer.getCamera().x)/(16.0 * xZoom));
-		y = (int) Math.floor((y + renderer.getCamera().y)/(16.0 * yZoom));
+	public void rightClick(int x, int y) {
+		x = (int) Math.floor((x + renderer.getCamera().x) / ((float)TILE_SIZE * xZoom));
+		y = (int) Math.floor((y + renderer.getCamera().y) / ((float)TILE_SIZE * yZoom));
 		map.removeTile(selectedLayer, x, y);
 	}
 
+	public void render() {
+		BufferStrategy bufferStrategy = canvas.getBufferStrategy();
+		Graphics graphics = bufferStrategy.getDrawGraphics();
+		super.paint(graphics);
 
-	public void render() 
-	{
-			BufferStrategy bufferStrategy = canvas.getBufferStrategy();
-			Graphics graphics = bufferStrategy.getDrawGraphics();
-			super.paint(graphics);
+		map.render(renderer, objects, xZoom, yZoom);
 
-			map.render(renderer, objects, xZoom, yZoom);
+		renderer.render(graphics);
 
-			renderer.render(graphics);
-			
-			graphics.dispose();
-			bufferStrategy.show();
-			renderer.clear();
+		graphics.dispose();
+		bufferStrategy.show();
+		renderer.clear();
 	}
 
-	public void changeTile(int tileID) 
-	{
+	public void changeTile(int tileID) {
 		selectedTileID = tileID;
 	}
 
-	public int getSelectedTile()
-	{
+	public int getSelectedTile() {
 		return selectedTileID;
 	}
-	
+
 	public void setSelectedTile(int id) {
-		this.selectedTileID=id;
+		this.selectedTileID = id;
 	}
 
-	public static void main(String[] args) 
-	{
-		Game game = new Game();
-		game.start();
-	}
-
-	public KeyBoardListener getKeyListener() 
-	{
+	public KeyBoardListener getKeyListener() {
 		return keyListener;
 	}
 
-	public MouseEventListener getMouseListener() 
-	{
+	public MouseEventListener getMouseListener() {
 		return mouseListener;
 	}
 
-	public RenderHandler getRenderer()
-	{
+	public RenderHandler getRenderer() {
 		return renderer;
 	}
 
@@ -275,48 +256,49 @@ public class Game extends JFrame
 		return yZoom;
 	}
 
-
 	public int getSelectedLayer() {
 		return selectedLayer;
 	}
 
-
 	public void setSelectedLayer(int selectedLayer) {
 		this.selectedLayer = selectedLayer;
 	}
-
 
 	public void start() {
 		status = GameStatus.RUNNING;
 		Thread gameThread = new Thread(this::gameLoop);
 		gameThread.start();
 	}
-	
+
 	public void stop() {
 		status = GameStatus.STOPPED;
 	}
-	
+
 	private void gameLoop() {
-		int frames=0;
+		int frames = 0;
 		long lastTime = System.currentTimeMillis();
-		while(isGameRunning()) {
+		while (isGameRunning()) {
 			this.timer.advanceTime();
-			for(int i = 0; i < this.timer.ticks; ++i) {
+			for (int i = 0; i < this.timer.ticks; ++i) {
 				update();
 			}
 			render();
-			
+
 			frames++;
-			while(System.currentTimeMillis() >= lastTime+1000L) {
-				System.out.println("FPS: "+frames);
-				lastTime+=1000L;
-				frames=0;
+			while (System.currentTimeMillis() >= lastTime + 1000L) {
+				System.out.println("FPS: " + frames);
+				lastTime += 1000L;
+				frames = 0;
 			}
 		}
 	}
 
-
 	public boolean isGameRunning() {
 		return status.equals(GameStatus.RUNNING);
+	}
+
+	public static void main(String[] args) {
+		Game game = new Game();
+		game.start();
 	}
 }
