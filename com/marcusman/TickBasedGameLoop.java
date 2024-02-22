@@ -13,7 +13,8 @@ public class TickBasedGameLoop extends GameLoop {
 	@Override
 	protected void processGameLoop() {
 		this.timer = getTimer();
-		
+		int frames=0;
+		long lastTime = System.currentTimeMillis();
 		while(isGameRunning()) 
 		{
 			this.timer.advanceTime();
@@ -22,6 +23,13 @@ public class TickBasedGameLoop extends GameLoop {
 			}
 			
 			render.run();
+			
+			frames++;
+			while(System.currentTimeMillis() >= lastTime+1000L) {
+				System.out.println("FPS: "+frames);
+				lastTime+=1000L;
+				frames=0;
+			}
 			
 		}
 	}

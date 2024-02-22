@@ -56,4 +56,5 @@ public class Timer {
 		
 		return Math.min(max, Math.max(val, min));
 	}
+	
 }
