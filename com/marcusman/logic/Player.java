@@ -2,7 +2,6 @@ package com.marcusman.logic;
 
 import com.marcusman.graphics.AnimatedSprite;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import com.marcusman.Game;
