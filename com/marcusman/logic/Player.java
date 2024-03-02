@@ -2,6 +2,7 @@ package com.marcusman.logic;
 
 import com.marcusman.graphics.AnimatedSprite;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import com.marcusman.Game;
@@ -34,7 +35,7 @@ public class Player implements GameObject
 
 		updateDirection();
 		playerRectangle = new Rectangle(-90, 0, 20, 26);
-		playerRectangle.generateGraphics(3, 0xFF00FF90);
+		
 		collisionCheckRectangle = new Rectangle(0, 0, 10*xZoom, 15*yZoom);
 	}
 
