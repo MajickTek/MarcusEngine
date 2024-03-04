@@ -1,6 +1,7 @@
 package com.marcusman;
 
 import com.marcusman.graphics.AnimatedSprite;
+import com.marcusman.utils.GameAudio;
 import com.marcusman.utils.GameObject;
 import com.marcusman.graphics.gui.GUI;
 import com.marcusman.graphics.gui.GUIButton;
@@ -9,7 +10,6 @@ import com.marcusman.logic.Map;
 import com.marcusman.input.MouseEventListener;
 import com.marcusman.logic.Player;
 import com.marcusman.utils.Rectangle;
-import com.marcusman.utils.UnitConverter;
 import com.marcusman.graphics.RenderHandler;
 import com.marcusman.graphics.gui.SDKButton;
 import com.marcusman.graphics.Sprite;
@@ -33,11 +33,11 @@ import java.io.IOException;
 import java.io.File;
 
 public class Game extends JFrame {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	public static int alpha = 0xFFFF00DC;
-	public static final int TILE_SIZE=UnitConverter.TILE_SIZE;
+	public static final int TILE_SIZE=16;
 	
 	private Canvas canvas = new Canvas();
 	private RenderHandler renderer;
@@ -64,7 +64,7 @@ public class Game extends JFrame {
 	private volatile GameStatus status;
 	
 	public Game() {
-		GameInstance.setInstance(this);
+		
 		timer = new Timer(60);
 		status = GameStatus.STOPPED;
 
@@ -170,7 +170,12 @@ public class Game extends JFrame {
 		
 			for (int i = 0; i < objects.length; i++)
 				objects[i].update(this);
-		
+		try {
+			GameAudio.play(new File(Game.class.getResource("/res/explode.wav").toURI()), player.getRectangle().x, player.getRectangle().y, 0, 0);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private BufferedImage loadImage(String path) {
