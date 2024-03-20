@@ -61,6 +61,9 @@ public class Game extends JFrame {
 	private int yZoom = 3;
 
 	private volatile GameStatus status;
+
+	private static final int TARGET_FPS=60;
+	private static final long MS_PER_FRAME = TimeUnit.SECONDS.toMillis(1)/TARGET_FPS;
 	
 	public Game() {
 		
@@ -278,9 +281,6 @@ public class Game extends JFrame {
 	public void stop() {
 		status = GameStatus.STOPPED;
 	}
-	
-	static final int TARGET_FPS=60;
-	static final long MS_PER_FRAME = TimeUnit.SECONDS.toMillis(1)/TARGET_FPS;
 	
 	private void gameLoop() {
 		long prev = System.currentTimeMillis();
