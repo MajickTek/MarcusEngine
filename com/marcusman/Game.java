@@ -1,7 +1,6 @@
 package com.marcusman;
 
 import com.marcusman.graphics.AnimatedSprite;
-import com.marcusman.utils.GameAudio;
 import com.marcusman.utils.GameObject;
 import com.marcusman.graphics.gui.GUI;
 import com.marcusman.graphics.gui.GUIButton;
@@ -24,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
@@ -60,12 +60,10 @@ public class Game extends JFrame {
 	private int xZoom = 3;
 	private int yZoom = 3;
 
-	private Timer timer;
 	private volatile GameStatus status;
 	
 	public Game() {
 		
-		timer = new Timer(60);
 		status = GameStatus.STOPPED;
 
 		// Make our program shutdown when we exit out.
@@ -165,17 +163,12 @@ public class Game extends JFrame {
 		canvas.requestFocus();
 
 	}
-
+	
 	public void update() {
 		
 			for (int i = 0; i < objects.length; i++)
 				objects[i].update(this);
-		try {
-			GameAudio.play(new File(Game.class.getResource("/res/explode.wav").toURI()), player.getRectangle().x, player.getRectangle().y, 0, 0);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			
 	}
 
 	private BufferedImage loadImage(String path) {
@@ -286,21 +279,32 @@ public class Game extends JFrame {
 		status = GameStatus.STOPPED;
 	}
 	
+	static final int TARGET_FPS=60;
+	static final long MS_PER_FRAME = TimeUnit.SECONDS.toMillis(1)/TARGET_FPS;
+	
 	private void gameLoop() {
-		int frames = 0;
-		long lastTime = System.currentTimeMillis();
-		while (isGameRunning()) {
-			this.timer.advanceTime();
-			for (int i = 0; i < this.timer.ticks; ++i) {
+		long prev = System.currentTimeMillis();
+		long lag=0L;
+		int frameCount=0;
+		long lastFPSTime = System.currentTimeMillis();
+		
+		while(isGameRunning()) {
+			long cur = System.currentTimeMillis();
+			long elapsed = cur - prev;
+			prev = cur;
+			lag += elapsed;
+			while(lag >= MS_PER_FRAME) {
 				update();
+				lag -= MS_PER_FRAME;
 			}
 			render();
-
-			frames++;
-			while (System.currentTimeMillis() >= lastTime + 1000L) {
-				System.out.println("FPS: " + frames);
-				lastTime += 1000L;
-				frames = 0;
+			frameCount++;
+			
+			if(System.currentTimeMillis() - lastFPSTime >= TimeUnit.SECONDS.toMillis(1)) {
+				float fps = (float) frameCount / ((System.currentTimeMillis() - lastFPSTime) / 1000);
+				System.out.println("FPS: " +fps);
+				frameCount=0;
+				lastFPSTime=System.currentTimeMillis();
 			}
 		}
 	}
