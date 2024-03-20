@@ -158,6 +158,14 @@ public class Player implements GameObject
 	public Rectangle getCollisionCheckRectangle() {
 		return collisionCheckRectangle;
 	}
+	
+	public int getX() {
+		return getRectangle().x;
+	}
+	
+	public int getY() {
+		return getRectangle().y;
+	}
 	//Call whenever mouse is clicked on Canvas.
 	public boolean handleMouseClick(Rectangle mouseRectangle, Rectangle camera, int xZoom, int yZoom) { return false; }
 }

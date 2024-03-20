@@ -55,7 +55,7 @@ public class MouseEventListener implements MouseListener, MouseMotionListener, M
 		
 		if(event.getButton() == MouseEvent.BUTTON2) {
 			try {
-				GameAudio.play(new File(Game.class.getResource("/res/explode.wav").toURI()), game.getPlayer().getRectangle().x, game.getPlayer().getRectangle().y, 0, 0);
+				GameAudio.play(new File(Game.class.getResource("/res/explode.wav").toURI()), game.getPlayer().getX(), game.getPlayer().getY(), 0, 0);
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
