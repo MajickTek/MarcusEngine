@@ -1,12 +1,15 @@
 package com.marcusman.input;
 
 import com.marcusman.Game;
+import com.marcusman.utils.GameAudio;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
+import java.net.URISyntaxException;
 
 public class MouseEventListener implements MouseListener, MouseMotionListener, MouseWheelListener 
 {
@@ -49,6 +52,15 @@ public class MouseEventListener implements MouseListener, MouseMotionListener, M
 
 		if(event.getButton() == MouseEvent.BUTTON3)
 			game.rightClick(event.getX(), event.getY());
+		
+		if(event.getButton() == 5) {
+			try {
+				GameAudio.play(new File(Game.class.getResource("/res/explode.wav").toURI()), game.getPlayer().getRectangle().x, game.getPlayer().getRectangle().y, 0, 0);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void mouseReleased(MouseEvent event)

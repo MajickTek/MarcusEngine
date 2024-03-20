@@ -32,6 +32,6 @@ public class GameAudio {
 	}
 	
 	public static synchronized void play(final File file, int playerX, int playerY, int sourceX, int sourceY) {
-		play(file, playerX, playerY, sourceX, sourceY, 500, 20f);
+		play(file, playerX, playerY, sourceX, sourceY, 1000, 20f);
 	}
 }

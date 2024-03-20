@@ -166,6 +166,7 @@ public class Game extends JFrame {
 		canvas.requestFocus();
 
 	}
+	double counter=0;
 	
 	public void update() {
 		
@@ -263,6 +264,10 @@ public class Game extends JFrame {
 	public int getSelectedLayer() {
 		return selectedLayer;
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
 
 	public void setSelectedLayer(int selectedLayer) {
 		this.selectedLayer = selectedLayer;
@@ -291,6 +296,7 @@ public class Game extends JFrame {
 		while(isGameRunning()) {
 			long cur = System.currentTimeMillis();
 			long elapsed = cur - prev;
+			
 			prev = cur;
 			lag += elapsed;
 			while(lag >= MS_PER_FRAME) {
@@ -308,7 +314,7 @@ public class Game extends JFrame {
 			}
 		}
 	}
-
+	
 	public boolean isGameRunning() {
 		return status.equals(GameStatus.RUNNING);
 	}
